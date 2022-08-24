@@ -3,12 +3,8 @@ name: Trigger auto deployment for identity-check-service
 # When this action will be executed
 on:
   # Automatically trigger it when detected changes in repo
-  push:
-    branches: 
-      [ master ]
-    paths:
-    - '**'
-    - '.github/workflows/identity-check-service-AutoDeployTrigger-470c32ce-bc83-4c1d-91d4-eeef94f20d8d.yml'
+  release:
+    types: [published]
 
   # Allow mannually trigger 
   workflow_dispatch:      
@@ -35,7 +31,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: gramacheckservices.azurecr.io/identity-check-service:${{ github.sha }}
+          tags: gramacheckservices.azurecr.io/identity-check:${{ github.event.release.tag_name }}
           file: ./Dockerfile
           context: ./
 
